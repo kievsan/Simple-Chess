@@ -134,13 +134,19 @@ public class ChessGame {
 
         private Map<String, String> validMoveWithinChessBoard(String nextMove) {
             String err = "Неполные, некорректные данные для хода или за пределами шахматной доски.";
-
-            String[] move = nextMove.trim().split(" ");
-            if (move.length < 2) throw new InputMismatchException(err);
-
-            if (Position.positionToInt(move[0]) == null || Position.positionToInt(move[1]) == null)
+            try {
+                var move = getMoveMap(nextMove);
+                if (Position.positionToInt(move.get("start")) == null
+                        || Position.positionToInt(move.get("finish")) == null)
+                    throw new InputMismatchException(err);
+                return move;
+            } catch (Exception ex) {
                 throw new InputMismatchException(err);
+            }
+        }
 
+        private Map<String, String> getMoveMap(String rawMove) {
+            String[] move = rawMove.trim().split(" ");
             Map<String, String> validatedMove = new HashMap<>(2);
             validatedMove.put("start", move[0]);
             validatedMove.put("finish", move[1]);

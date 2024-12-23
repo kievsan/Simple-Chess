@@ -1,10 +1,9 @@
 package ru.mail.kievsan;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ChessGame {
+
     private final ChessBoard board = new ChessBoard();
     private final List<MoveHistory> history = new ArrayList<>();
     private final Scanner scan = new Scanner(System.in);
@@ -25,7 +24,7 @@ public class ChessGame {
     }
 
     public void printHistory() {
-        System.out.printf("%nGAME HISTORY:\t%s ходов%n===========%n", getMovesCounter());
+        System.out.printf("%nGAME HISTORY:\tходов - %s.%n============%n", getMovesCounter());
         for (MoveHistory move : getHistory()) System.out.println(move);
     }
 
@@ -35,7 +34,7 @@ public class ChessGame {
 
     public void start() {
         this.currentGamer = whiteGamer;
-        String[] nextMove;
+        Map<String, String> nextMove;
         while (true) {
             try {
                 nextMove = currentGamer.getNextMove();
@@ -44,8 +43,8 @@ public class ChessGame {
                 break;
             }
 
-            int[] start = Position.positionToInt(nextMove[0]);
-            int[] finish = Position.positionToInt(nextMove[1]);
+            int[] start = Position.positionToInt(nextMove.get("start"));
+            int[] finish = Position.positionToInt(nextMove.get("finish"));
 
             Pieces startPiece = this.board.pieces[start[0]][start[1]];
             Pieces finishPiece = this.board.pieces[finish[0]][finish[1]];
@@ -54,7 +53,7 @@ public class ChessGame {
 
             // TODO  проверка, нет ли мешающих фигур на пути? (конь и пешка - с ньюансами...)
 
-            System.out.printf("Принят ход: %s-%s%n", nextMove[0], nextMove[1]);
+            System.out.printf("Принят ход: %s-%s%n", nextMove.get("start"), nextMove.get("finish"));
 
             var newHistory = currentGamer.moveIt(start, finish);
             history.add(newHistory);
@@ -96,6 +95,7 @@ public class ChessGame {
 
 
     private class Gamer {
+
         private final Color color;
         private final String name;
 
@@ -112,9 +112,8 @@ public class ChessGame {
             return name;
         }
 
-        public String[] getNextMove() throws Exception {
+        public Map<String, String> getNextMove() throws Exception {
             String nextMove;
-            String[] move;
             System.out.printf("""
                     
                     Введите через пробел местоположение фигуры для следующего хода,
@@ -123,17 +122,29 @@ public class ChessGame {
                     
                     %s, твой ход: %d-й%n""", currentGamer.getName(), movesCounter + 1);
             while ((nextMove = scan.nextLine()).isBlank() || !(nextMove = nextMove.trim()).equals("exit")) {
-                if ((move = nextMove.trim().split(" ")).length > 1)
-                    if ((Position.positionToInt(move[0]) != null) && Position.positionToInt(move[1]) != null)
-                        return new String[]{move[0], move[1]};
-                System.out.printf("""
-                        Ошибочный ход - не принят!
-                        
-                        Попробуй еще раз,например: e2 e3
-                        %s, твой ход: %d-й%n""", currentGamer.getName(), movesCounter + 1);
+                try {
+                    return validMoveWithinChessBoard(nextMove);
+                } catch (InputMismatchException ex) {
+                    System.out.println(ex.getMessage());
+                }
             }
             throw new Exception(("\nИгра прервана на %d-м ходу " +
                     "игроком %s").formatted(movesCounter + 1, currentGamer.getName()));
+        }
+
+        private Map<String, String> validMoveWithinChessBoard(String nextMove) {
+            String err = "Неполные, некорректные данные для хода или за пределами шахматной доски.";
+
+            String[] move = nextMove.trim().split(" ");
+            if (move.length < 2) throw new InputMismatchException(err);
+
+            if (Position.positionToInt(move[0]) == null || Position.positionToInt(move[1]) == null)
+                throw new InputMismatchException(err);
+
+            Map<String, String> validatedMove = new HashMap<>(2);
+            validatedMove.put("start", move[0]);
+            validatedMove.put("finish", move[1]);
+            return validatedMove;
         }
 
         public MoveHistory moveIt(int[] from, int[] into) {
@@ -152,6 +163,7 @@ public class ChessGame {
 
 
     private class MoveHistory {
+
         private final int moveNumber;
         private final Gamer gamer;
         private final Position fromPosition;

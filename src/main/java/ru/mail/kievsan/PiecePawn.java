@@ -10,13 +10,13 @@ public class PiecePawn extends PiecesImpl {
         return PiecesID.PAWN;
     }
 
-    @Override
-    public boolean canBeMove() {
-        return false;
-    }
-
-    @Override
-    public boolean canBeAttack() {
-        return false;
-    }
+//    @Override
+//    public boolean canBeMove(Position start, Position finish, ChessBoard board) {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean canBeAttack() {
+//        return false;
+//    }
 }

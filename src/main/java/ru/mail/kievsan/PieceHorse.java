@@ -11,13 +11,8 @@ public class PieceHorse extends PiecesImpl{
         return PiecesID.HORSE;
     }
 
-    @Override
-    public boolean canBeMove() {
-        return false;
-    }
-
-    @Override
-    public boolean canBeAttack() {
-        return false;
-    }
+//    @Override
+//    public boolean canBeMove(Position start, Position finish, ChessBoard board) {
+//        return false;
+//    }
 }

@@ -11,12 +11,7 @@ public class PieceRook extends PiecesImpl {
     }
 
     @Override
-    public boolean canBeMove() {
-        return false;
-    }
-
-    @Override
-    public boolean canBeAttack() {
-        return false;
+    public boolean canBeMove(Position start, Position finish, ChessBoard board){
+        return canBeLineMove(start, finish, ChessBoard.ROWS.length());
     }
 }

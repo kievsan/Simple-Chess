@@ -28,10 +28,10 @@ public class ChessBoard {
         pieces[rows - 1][1] = new PieceHorse(Color.WHITE);
         pieces[rows - 1][cols - 2] = new PieceHorse(Color.WHITE);
         // Setup Bishops
-        pieces[0][2] = new PieceBeshop(Color.BLACK);
-        pieces[0][cols - 3] = new PieceBeshop(Color.BLACK);
-        pieces[rows - 1][2] = new PieceBeshop(Color.WHITE);
-        pieces[rows - 1][cols - 3] = new PieceBeshop(Color.WHITE);
+        pieces[0][2] = new PieceBishop(Color.BLACK);
+        pieces[0][cols - 3] = new PieceBishop(Color.BLACK);
+        pieces[rows - 1][2] = new PieceBishop(Color.WHITE);
+        pieces[rows - 1][cols - 3] = new PieceBishop(Color.WHITE);
         // Setup Queens
         pieces[0][3] = new PieceQueen(Color.BLACK);
         pieces[rows - 1][3] = new PieceQueen(Color.WHITE);

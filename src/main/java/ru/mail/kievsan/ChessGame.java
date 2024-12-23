@@ -43,15 +43,18 @@ public class ChessGame {
                 break;
             }
 
-            int[] start = Position.positionToInt(nextMove.get("start"));
-            int[] finish = Position.positionToInt(nextMove.get("finish"));
+            var start = new Position(nextMove.get("start"));
+            var finish = new Position(nextMove.get("finish"));
 
-            Pieces startPiece = this.board.pieces[start[0]][start[1]];
-            Pieces finishPiece = this.board.pieces[finish[0]][finish[1]];
+            Pieces startPiece = this.board.pieces[start.getRow()][start.getColumn()];
+            Pieces finishPiece = this.board.pieces[finish.getRow()][finish.getColumn()];
 
             if (isNotValid(startPiece, finishPiece)) continue;
 
-            // TODO  проверка, нет ли мешающих фигур на пути? (конь и пешка - с ньюансами...)
+            if (!startPiece.canBeMove(start, finish, board)) {
+                System.out.printf("%s, %s так не ходит!%n", currentGamer.getName(), startPiece.getID().name());
+                continue;
+            }
 
             System.out.printf("Принят ход: %s-%s%n", nextMove.get("start"), nextMove.get("finish"));
 
@@ -68,7 +71,7 @@ public class ChessGame {
 
     private boolean isNotValid(Pieces startPiece, Pieces finishPiece) {
         if (startPiece == null) {
-            System.out.printf("%s, нет вашей фигуры в выбранном поле, чтобы походить!" +
+            System.out.printf("%s, нет вашей фигуры в выбранном поле, чтобы сделать ход!" +
                     "%n", currentGamer.getName());
             return true;
         }
@@ -153,15 +156,15 @@ public class ChessGame {
             return validatedMove;
         }
 
-        public MoveHistory moveIt(int[] from, int[] into) {
+        public MoveHistory moveIt(Position from, Position into) {
             var newHistory = new MoveHistory(++movesCounter, currentGamer,
-                    new Position(from[0],from[1]),
-                    new Position(into[0], into[1]),
-                    board.pieces[from[0]][from[1]],
-                    board.pieces[into[0]][into[1]]
+                    new Position(from.getRow(),from.getColumn()),
+                    new Position(into.getRow(), into.getColumn()),
+                    board.pieces[from.getRow()][from.getColumn()],
+                    board.pieces[into.getRow()][into.getColumn()]
             );
-            board.pieces[into[0]][into[1]] = board.pieces[from[0]][from[1]];
-            board.pieces[from[0]][from[1]] = null;
+            board.pieces[into.getRow()][into.getColumn()] = board.pieces[from.getRow()][from.getColumn()];
+            board.pieces[from.getRow()][from.getColumn()] = null;
 
             return newHistory;
         }

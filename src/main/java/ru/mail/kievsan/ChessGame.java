@@ -13,11 +13,24 @@ public class ChessGame {
 
     private int movesCounter = 0;
 
-    Gamer currentGamer;
+    private Gamer currentGamer;
 
     public ChessGame(String whiteName, String blackName) {
         this.whiteGamer = new Gamer(Color.WHITE, whiteName);
         this.blackGamer = new Gamer(Color.BLACK, blackName);
+    }
+
+    public List<MoveHistory> getHistory() {
+        return history;
+    }
+
+    public void printHistory() {
+        System.out.printf("%nGAME HISTORY:\t%s ходов%n===========%n", getMovesCounter());
+        for (MoveHistory move : getHistory()) System.out.println(move);
+    }
+
+    public int getMovesCounter() {
+        return movesCounter;
     }
 
     public void start() {
@@ -81,10 +94,6 @@ public class ChessGame {
         return currentGamer.equals(whiteGamer) ? blackGamer : whiteGamer;
     }
 
-    public int getMovesCounter() {
-        return movesCounter;
-    }
-
 
     private class Gamer {
         private final Color color;
@@ -108,7 +117,7 @@ public class ChessGame {
             String[] move;
             System.out.printf("""
                     
-                    Введите через пробел местоположение фигуры для следующего хода, 
+                    Введите через пробел местоположение фигуры для следующего хода,
                     и куда поставить эту  фигуру на доске, например: e2 e3
                     Для выхода из игры введите 'exit'.
                     
@@ -121,7 +130,7 @@ public class ChessGame {
                         Ошибочный ход - не принят!
                         
                         Попробуй еще раз,например: e2 e3
-                        %s, твой ход: %d-й%n""", currentGamer.getName(), movesCounter + 1);;
+                        %s, твой ход: %d-й%n""", currentGamer.getName(), movesCounter + 1);
             }
             throw new Exception(("\nИгра прервана на %d-м ходу " +
                     "игроком %s").formatted(movesCounter + 1, currentGamer.getName()));
@@ -134,7 +143,6 @@ public class ChessGame {
                     board.pieces[from[0]][from[1]],
                     board.pieces[into[0]][into[1]]
             );
-
             board.pieces[into[0]][into[1]] = board.pieces[from[0]][from[1]];
             board.pieces[from[0]][from[1]] = null;
 

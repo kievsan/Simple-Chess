@@ -159,11 +159,10 @@ public class ChessGame {
         }
 
         public MoveHistory moveIt(Position from, Position into) {
-            var newHistory = new MoveHistory(++movesCounter, currentGamer,
-                    new Position(from.getRow(),from.getColumn()),
-                    new Position(into.getRow(), into.getColumn()),
+            var newHistory = new MoveHistory(++movesCounter, currentGamer, from, into,
                     board.getPieces()[from.getRow()][from.getColumn()],
-                    board.getPieces()[into.getRow()][into.getColumn()]
+                    board.getPieces()[into.getRow()][into.getColumn()],
+                    false // <-- в разработке
             );
             board.getPieces()[into.getRow()][into.getColumn()] = board.getPieces()[from.getRow()][from.getColumn()];
             board.getPieces()[from.getRow()][from.getColumn()] = null;
@@ -186,16 +185,18 @@ public class ChessGame {
         private final Position intoPosition;
         private final Pieces piece;
         private final Pieces lostPeace;
+        private final boolean isUnderAttack;
 
         public MoveHistory(int moveNumber, Gamer gamer,
                            Position fromPosition, Position intoPosition,
-                           Pieces piece, Pieces lostPeace) {
+                           Pieces piece, Pieces lostPeace, boolean isUnderAttack) {
             this.moveNumber = moveNumber;
             this.gamer = gamer;
             this.fromPosition = fromPosition;
             this.intoPosition = intoPosition;
             this.piece = piece;
             this.lostPeace = lostPeace;
+            this.isUnderAttack = isUnderAttack;
         }
 
         @Override
@@ -209,6 +210,7 @@ public class ChessGame {
             if (lostPeace != null) interview.append(", убиты - %s%s"
                     .formatted(lostPeace.getID().getSymbol(), lostPeace.getColor().getSymbol()));
             interview.append(".");
+            if (isUnderAttack) interview.append("\tШАХ!");
             return interview.toString();
         }
     }

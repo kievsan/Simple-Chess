@@ -4,6 +4,8 @@ import java.util.InputMismatchException;
 
 public class Position {
 
+    private static final int whitePlayDirection = -1;    // "a8" - (0, 0)
+
     private static final String ROWS = ChessBoard.ROWS;
     private static final String COLS = ChessBoard.COLUMNS;
 
@@ -51,6 +53,6 @@ public class Position {
     }
 
     public int getVerticalVector(Position next) {
-        return next.getRow() - row;
+        return (next.getRow() - row) * whitePlayDirection;
     }
 }

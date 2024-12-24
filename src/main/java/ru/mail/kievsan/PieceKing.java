@@ -13,6 +13,11 @@ public class PieceKing extends PiecesImpl {
 
     @Override
     public boolean canBeMove(Position start, Position finish, ChessBoard board){
-        return canBeDiagonalMove(start, finish, 1) && canBeLineMove(start, finish, 1);
+        return canBeDiagonalMove(start, finish, 1, false) &&
+                canBeLineMove(start, finish, 1, false);
+    }
+
+    boolean isUnderAttack(ChessBoard board, int line, int column) {
+        return false;
     }
 }

@@ -10,13 +10,14 @@ public class PiecePawn extends PiecesImpl {
         return PiecesID.PAWN;
     }
 
-//    @Override
-//    public boolean canBeMove(Position start, Position finish, ChessBoard board) {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean canBeAttack() {
-//        return false;
-//    }
+    @Override
+    public boolean canBeMove(Position start, Position finish, ChessBoard board) {
+        int maxMoveLen = hasMoved() ? 1 : 2;
+        return canBeLineMove(start, finish, maxMoveLen, true) || canBeAttack(start, finish, board);
+    }
+
+    private boolean canBeAttack(Position start, Position finish, ChessBoard board) {
+        if (!canBeDiagonalMove(start, finish, 1, true)) return false;
+        return false;
+    }
 }

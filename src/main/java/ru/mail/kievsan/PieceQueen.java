@@ -13,7 +13,7 @@ public class PieceQueen extends PiecesImpl {
 
     @Override
     public boolean canBeMove(Position start, Position finish, ChessBoard board) {
-        return canBeDiagonalMove(start, finish, ChessBoard.ROWS.length()) &&
-                canBeLineMove(start, finish, ChessBoard.ROWS.length());
+        return canBeDiagonalMove(start, finish, ChessBoard.ROWS.length(), false) &&
+                canBeLineMove(start, finish, ChessBoard.ROWS.length(), false);
     }
 }

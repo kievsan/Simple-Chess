@@ -13,6 +13,6 @@ public class PieceBishop extends PiecesImpl {
 
     @Override
     public boolean canBeMove(Position start, Position finish, ChessBoard board) {
-        return canBeDiagonalMove(start, finish, ChessBoard.ROWS.length());
+        return canBeDiagonalMove(start, finish, ChessBoard.ROWS.length(), false);
     }
 }

@@ -5,15 +5,16 @@ public class ChessBoard {
     static final String ROWS = "87654321";
     static final String COLUMNS = "abcdefgh";
 
-    final int rows = ROWS.length();
-    final int cols = COLUMNS.length();
+
+    static final int rows = ROWS.length();
+    static final int cols = COLUMNS.length();
 
     Pieces[][] pieces;
 
-    public ChessBoard() {
+    public ChessBoard(String whiteGamer, String blackGamer) {
         this.pieces = new PiecesImpl[rows][cols];
         arrangePieces();
-        printBoard();
+        printBoard(whiteGamer, blackGamer);
     }
 
     private void arrangePieces() {
@@ -45,7 +46,7 @@ public class ChessBoard {
         }
     }
 
-    public void printBoard() {
+    public void printBoard(String whiteGamer, String blackGamer) {
         StringBuilder titleLineBuilder = new StringBuilder("\n");
         StringBuilder dividingLineBuilder = new StringBuilder("\n  |");
         COLUMNS.chars().forEach(column -> {
@@ -55,7 +56,7 @@ public class ChessBoard {
         String titleLine = titleLineBuilder.toString();
         String dividingLine = dividingLineBuilder.toString();
 
-        StringBuilder representation = new StringBuilder(titleLine + dividingLine);
+        StringBuilder representation = new StringBuilder(titleLine + blackGamer + dividingLine);
         ROWS.chars().forEach(row -> {
             representation
                     .append("\n")
@@ -70,7 +71,7 @@ public class ChessBoard {
                     .append((char)row)
                     .append(dividingLine);
         });
-        representation.append(titleLine);
+        representation.append(titleLine).append(whiteGamer);
 
         System.out.println(representation);
     }

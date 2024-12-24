@@ -4,7 +4,7 @@ import java.util.*;
 
 public class ChessGame {
 
-    private final ChessBoard board = new ChessBoard();
+    private final ChessBoard board;
     private final List<MoveHistory> history = new ArrayList<>();
     private final Scanner scan = new Scanner(System.in);
     private final Gamer whiteGamer;
@@ -17,6 +17,7 @@ public class ChessGame {
     public ChessGame(String whiteName, String blackName) {
         this.whiteGamer = new Gamer(Color.WHITE, whiteName);
         this.blackGamer = new Gamer(Color.BLACK, blackName);
+        this.board  = new ChessBoard(whiteGamer.toString(), blackGamer.toString());
     }
 
     public List<MoveHistory> getHistory() {
@@ -60,8 +61,9 @@ public class ChessGame {
 
             var newHistory = currentGamer.moveIt(start, finish);
             history.add(newHistory);
+            startPiece.incMoved();
 
-            board.printBoard();
+            board.printBoard(whiteGamer.toString(), blackGamer.toString());
             System.out.printf("%n%s%n", newHistory);
 
             currentGamer = getNextGamer();
@@ -168,6 +170,11 @@ public class ChessGame {
 
             return newHistory;
         }
+
+        @Override
+        public String toString() {
+            return "    %s, %s".formatted(color.name(), name);
+        }
     }
 
 
@@ -200,7 +207,7 @@ public class ChessGame {
                     .append("%s-%s".formatted(fromPosition.getPosition(), intoPosition.getPosition()))
             ;
             if (lostPeace != null) interview.append(", убиты - %s%s"
-                    .formatted(piece.getID().getSymbol(), piece.getColor().getSymbol()));
+                    .formatted(lostPeace.getID().getSymbol(), lostPeace.getColor().getSymbol()));
             interview.append(".");
             return interview.toString();
         }

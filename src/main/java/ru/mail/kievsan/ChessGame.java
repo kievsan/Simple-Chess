@@ -7,12 +7,12 @@ public class ChessGame {
     private final ChessBoard board;
     private final List<MoveHistory> history = new ArrayList<>();
     private final Scanner scan = new Scanner(System.in);
+
     private final Gamer whiteGamer;
     private final Gamer blackGamer;
+    private Gamer currentGamer;
 
     private int movesCounter = 0;
-
-    private Gamer currentGamer;
 
     public ChessGame(String whiteName, String blackName) {
         this.whiteGamer = new Gamer(Color.WHITE, whiteName);
@@ -47,8 +47,8 @@ public class ChessGame {
             var start = new Position(nextMove.get("start"));
             var finish = new Position(nextMove.get("finish"));
 
-            Pieces startPiece = this.board.pieces[start.getRow()][start.getColumn()];
-            Pieces finishPiece = this.board.pieces[finish.getRow()][finish.getColumn()];
+            Pieces startPiece = this.board.getPieces()[start.getRow()][start.getColumn()];
+            Pieces finishPiece = this.board.getPieces()[finish.getRow()][finish.getColumn()];
 
             if (isNotValid(startPiece, finishPiece)) continue;
 
@@ -63,7 +63,7 @@ public class ChessGame {
             history.add(newHistory);
             startPiece.incMoved();
 
-            board.printBoard(whiteGamer.toString(), blackGamer.toString());
+            board.printBoard();
             System.out.printf("%n%s%n", newHistory);
 
             currentGamer = getNextGamer();
@@ -162,11 +162,11 @@ public class ChessGame {
             var newHistory = new MoveHistory(++movesCounter, currentGamer,
                     new Position(from.getRow(),from.getColumn()),
                     new Position(into.getRow(), into.getColumn()),
-                    board.pieces[from.getRow()][from.getColumn()],
-                    board.pieces[into.getRow()][into.getColumn()]
+                    board.getPieces()[from.getRow()][from.getColumn()],
+                    board.getPieces()[into.getRow()][into.getColumn()]
             );
-            board.pieces[into.getRow()][into.getColumn()] = board.pieces[from.getRow()][from.getColumn()];
-            board.pieces[from.getRow()][from.getColumn()] = null;
+            board.getPieces()[into.getRow()][into.getColumn()] = board.getPieces()[from.getRow()][from.getColumn()];
+            board.getPieces()[from.getRow()][from.getColumn()] = null;
 
             return newHistory;
         }

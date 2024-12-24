@@ -9,12 +9,19 @@ public class ChessBoard {
     static final int rows = ROWS.length();
     static final int cols = COLUMNS.length();
 
-    Pieces[][] pieces;
+    private final Pieces[][] pieces;
+    String whiteGamer, blackGamer;
 
     public ChessBoard(String whiteGamer, String blackGamer) {
         this.pieces = new PiecesImpl[rows][cols];
+        this.whiteGamer = whiteGamer;
+        this.blackGamer = blackGamer;
         arrangePieces();
-        printBoard(whiteGamer, blackGamer);
+        printBoard();
+    }
+
+    public Pieces[][] getPieces() {
+        return pieces;
     }
 
     private void arrangePieces() {
@@ -46,7 +53,7 @@ public class ChessBoard {
         }
     }
 
-    public void printBoard(String whiteGamer, String blackGamer) {
+    public void printBoard() {
         StringBuilder titleLineBuilder = new StringBuilder("\n");
         StringBuilder dividingLineBuilder = new StringBuilder("\n  |");
         COLUMNS.chars().forEach(column -> {

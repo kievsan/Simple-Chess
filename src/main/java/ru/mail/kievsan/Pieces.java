@@ -36,4 +36,8 @@ public interface Pieces {
             return isWhitePiece ? vStep > 0 : vStep < 0;
         } else return false;
     }
+
+    default boolean canBeAttack(Position start, Position finish, ChessBoard board) {
+        return canBeMove(start, finish, board);
+    }
 }

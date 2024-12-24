@@ -16,7 +16,8 @@ public class PiecePawn extends PiecesImpl {
         return canBeLineMove(start, finish, maxMoveLen, true) || canBeAttack(start, finish, board);
     }
 
-    private boolean canBeAttack(Position start, Position finish, ChessBoard board) {
+    @Override
+    public boolean canBeAttack(Position start, Position finish, ChessBoard board) {
         if (!canBeDiagonalMove(start, finish, 1, true)) return false;
         Pieces piece = board.getPieces()[finish.getRow()][finish.getColumn()];
         return piece != null && !piece.getColor().equals(getColor());
